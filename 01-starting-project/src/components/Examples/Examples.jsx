@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { EXAMPLES } from "../../data.js";
+import Section from "../Section.jsx";
+import Tabs from "../Tabs.jsx";
 import TabButton from "../TabButton.jsx";
 import "./Examples.css";
 
@@ -25,56 +27,60 @@ export default function Examples() {
   // }
 
   return (
-    <section id="examples">
-      <h2>Examples</h2>
-      <menu>
-        {Object.keys(EXAMPLES).map((key) => (
-          <TabButton
-            key={key}
-            isSelected={selectedTopic === key}
-            onSelect={() => handleSelect(key)}
-          >
-            {EXAMPLES[key].title}
-          </TabButton>
-        ))}
-        {/* <TabButton
+    <Section title="Examples" id="examples">
+      <Tabs
+        buttons={
+          <>
+            {Object.keys(EXAMPLES).map((key) => (
+              <TabButton
+                key={key}
+                isSelected={selectedTopic === key}
+                onClick={() => handleSelect(key)}
+              >
+                {EXAMPLES[key].title}
+              </TabButton>
+            ))}
+            {/* <TabButton
               isSelected={selectedTopic === "components"}
-              onSelect={() => handleSelect("components")}
+              onClick={() => handleSelect("components")}
             >
               Components
             </TabButton>
             <TabButton
               isSelected={selectedTopic === "jsx"}
-              onSelect={() => handleSelect("jsx")}
+              onClick={() => handleSelect("jsx")}
             >
               JSX
             </TabButton>
             <TabButton
               isSelected={selectedTopic === "props"}
-              onSelect={() => handleSelect("props")}
+              onClick={() => handleSelect("props")}
             >
               Props
             </TabButton>
             <TabButton
               isSelected={selectedTopic === "state"}
-              onSelect={() => handleSelect("state")}
+              onClick={() => handleSelect("state")}
             >
               State
             </TabButton> */}
-      </menu>
-      {/* !selectTopic && <p>Please select a topic.</p> */}
-      {/* {tabContent} */}
-      {!selectedTopic ? (
-        <p>Please select a topic.</p>
-      ) : (
-        <div id="tab-content">
-          <h3>{EXAMPLES[selectedTopic].title}</h3>
-          <p>{EXAMPLES[selectedTopic].description}</p>
-          <pre>
-            <code>{EXAMPLES[selectedTopic].code}</code>
-          </pre>
-        </div>
-      )}
-    </section>
+          </>
+        }
+      >
+        {/* !selectTopic && <p>Please select a topic.</p> */}
+        {/* {tabContent} */}
+        {!selectedTopic ? (
+          <p>Please select a topic.</p>
+        ) : (
+          <div id="tab-content">
+            <h3>{EXAMPLES[selectedTopic].title}</h3>
+            <p>{EXAMPLES[selectedTopic].description}</p>
+            <pre>
+              <code>{EXAMPLES[selectedTopic].code}</code>
+            </pre>
+          </div>
+        )}
+      </Tabs>
+    </Section>
   );
 }
