@@ -1,76 +1,38 @@
 import { useState } from "react";
 
-import UserInput from "./components/UserInput";
-import { calculateInvestmentResults } from "./util/investment";
-
-function getAnnualData(
-  initialInvestment,
-  annualInvestment,
-  expectedReturn,
-  duration
-) {
-  let annualData = [];
-  if (initialInvestment && annualInvestment && expectedReturn && duration) {
-    annualData = calculateInvestmentResults({
-      initialInvestment,
-      annualInvestment,
-      expectedReturn,
-      duration,
-    });
-  }
-  return annualData;
-}
+import UserInputGroup from "./components/UserInputGroup";
+import InvestmentResult from "./components/InvestmentResult";
 
 function App() {
-  const [initialInvestment, setInitialInvestment] = useState(null);
-  const [annualInvestment, setAnnualInvestment] = useState(null);
-  const [expectedReturn, setExpectedReturn] = useState(null);
-  const [duration, setDuration] = useState(null);
+  const [userInput, setUserInput] = useState({
+    initialInvestment: 10000,
+    annualInvestment: 1200,
+    expectedReturn: 6,
+    duration: 10,
+  });
 
-  function handleChange(updateFunction, updateValue) {
-    updateFunction(updateValue);
+  const inputIsValid = userInput.duration >= 1;
+
+  function handleChange(inputIdentifier, newValue) {
+    setUserInput((prevUserInput) => {
+      return {
+        ...prevUserInput,
+        [inputIdentifier]: +newValue, // + converts the string to number
+      };
+    });
   }
-
-  const annualData = getAnnualData(
-    initialInvestment,
-    annualInvestment,
-    expectedReturn,
-    duration
-  );
 
   return (
     <>
-      <div className="input-group">
-        <UserInput
-          title={"Initial Investment"}
-          onChange={(updateValue) => {
-            handleChange(setInitialInvestment, updateValue);
-          }}
-        />
-        <UserInput
-          title={"Annual Investment"}
-          onChange={(updateValue) => {
-            handleChange(setAnnualInvestment, updateValue);
-          }}
-        />
-        <UserInput
-          title={"Expected Return"}
-          onChange={(updateValue) => {
-            handleChange(setExpectedReturn, updateValue);
-          }}
-        />
-        <UserInput
-          title={"Duration"}
-          onChange={(updateValue) => {
-            handleChange(setDuration, updateValue);
-          }}
-        />
-      </div>
-      {console.log("initialInvestment: " + initialInvestment)}
-      {console.log("annualInvestment: " + annualInvestment)}
-      {console.log("expectedReturn: " + expectedReturn)}
-      {console.log("duration: " + duration)}
-      {console.log("annual data: " + annualData)}
+      <UserInputGroup userInput={userInput} onChange={handleChange} />
+      {console.log("initialInvestment: " + userInput.initialInvestment)}
+      {console.log("annualInvestment: " + userInput.annualInvestment)}
+      {console.log("expectedReturn: " + userInput.expectedReturn)}
+      {console.log("duration: " + userInput.duration)}
+      {!inputIsValid && (
+        <p className="center">Please enter a duratin greater than zero</p>
+      )}
+      {inputIsValid && <InvestmentResult input={userInput} />}
     </>
   );
 }

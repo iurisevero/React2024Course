@@ -1,13 +1,14 @@
-export default function UserInput({ title, onChange, ...props }) {
+export default function UserInput({ title, value, onChange, ...props }) {
   return (
-    <div id="user-input">
+    <p>
       <label>{title}</label>
       <input
+        value={value}
         onChange={(event) => {
           onChange(event.target.value);
         }}
         {...props}
       />
-    </div>
+    </p>
   );
 }
